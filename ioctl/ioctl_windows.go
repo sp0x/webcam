@@ -1,6 +1,8 @@
+// +build windows
+
 package ioctl
 
-import "golang.org/x/sys/unix"
+import "errors"
 
 const (
 	typeBits      = 8
@@ -49,9 +51,10 @@ func IoRW(t, nr, size uintptr) uintptr {
 
 // Ioctl simplified ioct call
 func Ioctl(fd, op, arg uintptr) error {
-	_, _, ep := unix.Syscall(unix.SYS_IOCTL, fd, op, arg)
-	if ep != 0 {
-		return ep
-	}
-	return nil
+	return errors.New("Not implemented")
+	//_, _, ep := unix.Syscall(unix.SYS_IOCTL, fd, op, arg)
+	//if ep != 0 {
+	//		return ep//
+	//}
+	//return nil
 }

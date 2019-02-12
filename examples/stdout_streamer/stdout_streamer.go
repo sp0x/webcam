@@ -6,7 +6,7 @@
 // Example usage: go run stdout_streamer.go | vlc -
 package main
 
-import "github.com/blackjack/webcam"
+import "github.com/sp0x/webcam"
 import "os"
 import "fmt"
 import "sort"

@@ -5,9 +5,10 @@ package webcam
 
 import (
 	"errors"
-	"golang.org/x/sys/unix"
 	"reflect"
 	"unsafe"
+
+	"golang.org/x/sys/windows"
 )
 
 // Webcam object
@@ -31,7 +32,7 @@ type Control struct {
 // capable to stream video
 func Open(path string) (*Webcam, error) {
 
-	handle, err := unix.Open(path, unix.O_RDWR|unix.O_NONBLOCK, 0666)
+	handle, err := windows.Open(path, windows.O_RDWR|windows.O_NONBLOCK, 0666)
 	fd := uintptr(handle)
 
 	if fd < 0 || err != nil {
@@ -267,7 +268,7 @@ func (w *Webcam) Close() error {
 		w.StopStreaming()
 	}
 
-	err := unix.Close(int(w.fd))
+	err := windows.Close(windows.Handle(0))
 
 	return err
 }

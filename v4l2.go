@@ -5,8 +5,8 @@ import (
 	"encoding/binary"
 	"unsafe"
 
-	"github.com/blackjack/webcam/ioctl"
-	"golang.org/x/sys/unix"
+	"github.com/sp0x/webcam/ioctl"
+	"golang.org/x/sys/windows"
 )
 
 type controlType int
@@ -166,7 +166,7 @@ type v4l2_buffer struct {
 	bytesused uint32
 	flags     uint32
 	field     uint32
-	timestamp unix.Timeval
+	timestamp windows.Timeval
 	timecode  v4l2_timecode
 	sequence  uint32
 	memory    uint32
@@ -373,7 +373,7 @@ func mmapQueryBuffer(fd uintptr, index uint32, length *uint32) (buffer []byte, e
 
 	*length = req.length
 
-	buffer, err = unix.Mmap(int(fd), int64(offset), int(req.length), unix.PROT_READ|unix.PROT_WRITE, unix.MAP_SHARED)
+	// buffer, err = windows.Mmap(int(fd), int64(offset), int(req.length), unix.PROT_READ|unix.PROT_WRITE, unix.MAP_SHARED)
 	return
 }
 
@@ -411,7 +411,7 @@ func mmapEnqueueBuffer(fd uintptr, index uint32) (err error) {
 }
 
 func mmapReleaseBuffer(buffer []byte) (err error) {
-	err = unix.Munmap(buffer)
+	// err = unix.Munmap(buffer)
 	return
 }
 
@@ -431,30 +431,30 @@ func stopStreaming(fd uintptr) (err error) {
 
 }
 
-func FD_SET(p *unix.FdSet, i int) {
-	var l int = int(len(p.Bits))
-	p.Bits[i/l] |= 1 << uintptr(i%l)
+func FD_SET(p interface{}, i int) {
+	// var l int = int(len(p.Bits))
+	// p.Bits[i/l] |= 1 << uintptr(i%l)
 }
 
 func waitForFrame(fd uintptr, timeout uint32) (count int, err error) {
 
-	for {
-		fds := &unix.FdSet{}
-		FD_SET(fds, int(fd))
+	// for {
+	// 	fds := &unix.FdSet{}
+	// 	FD_SET(fds, int(fd))
 
-		var oneSecInNsec int64 = 1e9
-		timeoutNsec := int64(timeout) * oneSecInNsec
-		nativeTimeVal := unix.NsecToTimeval(timeoutNsec)
-		tv := &nativeTimeVal
+	// 	var oneSecInNsec int64 = 1e9
+	// 	timeoutNsec := int64(timeout) * oneSecInNsec
+	// 	nativeTimeVal := unix.NsecToTimeval(timeoutNsec)
+	// 	tv := &nativeTimeVal
 
-		count, err = unix.Select(int(fd+1), fds, nil, nil, tv)
+	// 	count, err = unix.Select(int(fd+1), fds, nil, nil, tv)
 
-		if count < 0 && err == unix.EINTR {
-			continue
-		}
-		return
-	}
-
+	// 	if count < 0 && err == unix.EINTR {
+	// 		continue
+	// 	}
+	// 	return
+	// }
+	return 0, nil
 }
 
 func getControl(fd uintptr, id uint32) (int32, error) {
