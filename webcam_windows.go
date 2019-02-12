@@ -1,3 +1,5 @@
+// +build windows
+
 // Library for working with webcams and other video capturing devices.
 // It depends entirely on v4l2 framework, thus will compile and work
 // only on Linux machine
