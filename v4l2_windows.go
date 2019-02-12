@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/sp0x/webcam/ioctl"
-	"golang.org/x/sys/windows"
 )
 
 type controlType int
@@ -166,7 +165,7 @@ type v4l2_buffer struct {
 	bytesused uint32
 	flags     uint32
 	field     uint32
-	timestamp windows.Timeval
+	timestamp uint32
 	timecode  v4l2_timecode
 	sequence  uint32
 	memory    uint32
